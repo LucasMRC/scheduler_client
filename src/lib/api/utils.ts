@@ -22,7 +22,10 @@ export async function get(url: string): Promise<any> {
         }
     });
     if (!response.ok) {
-        throw new Error(response.statusText);
+        if (response.status === 401)
+            window.location.reload();
+        else
+            throw new Error(response.statusText);
     }
     return response.json();
 };
@@ -68,7 +71,10 @@ export async function remove(url: string): Promise<any> {
         }
     });
     if (!response.ok) {
-        throw new Error(response.statusText);
+        if (response.status === 401)
+            window.location.reload();
+        else
+            throw new Error(response.statusText);
     }
     return response.json();
 };

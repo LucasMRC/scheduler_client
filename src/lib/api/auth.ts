@@ -1,4 +1,4 @@
-import * as mock from '../mock';
+// import * as mock from '../mock';
 import { getCookie, setCookie, baseUrl } from './utils';
 
 export async function login(username: string, password: string): Promise<never | User> {
