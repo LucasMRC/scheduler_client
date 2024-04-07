@@ -43,7 +43,7 @@
 </script>
 
 <section
-    class="grid place-items-center w-full h-[100vh] p-4 bg-slate-200 border border-gray-400 shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700 gap-2"
+    class="grid place-items-center w-full h-[100vh] p-4 shadow sm:p-6 gap-2"
 >
     <form
         class="bg-gray-50 dark:bg-gray-950 py-5 px-10 w-72 rounded grid gap-5 text-sm"

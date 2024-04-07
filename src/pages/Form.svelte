@@ -36,7 +36,7 @@
             await createTask(task);
             const assignedUser = users.find((user) => user.email === assignee);
             if (!assignedUser) {
-                throw new Error("User not found");
+                throw new Error("Assinged user not found");
             }
             Store.saveTask({ ...task, assignedTo: assignedUser });
             showToast("success", "Task created successfully");
@@ -53,7 +53,7 @@
 </script>
 
 <section
-    class="grid place-items-center w-full h-[100vh] p-4 bg-white border border-gray-200 shadow sm:p-6 dark:bg-gray-800 dark:border-gray-700"
+    class="grid place-items-center w-full h-[100vh] p-4 shadow sm:p-6"
 >
     <form
         on:submit|preventDefault={submitForm}

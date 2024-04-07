@@ -39,7 +39,7 @@
     }
 </script>
 
-<main>
+<main class="border dark:bg-neutral-800 dark:neutral-gray-700 bg-white border-neutral-200">
     <ModeWatcher />
     <QuickActions displayLogout={screen !== "login"} {handleLogout} />
     {#if screen === "login"}
