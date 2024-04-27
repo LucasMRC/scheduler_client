@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { login } from "../lib/api";
+    import { login, signup } from "../lib/api";
     import Store from "../store";
     import { showToast } from "../store/toast";
     import { Button } from "../lib/components/ui/button";
@@ -10,8 +10,11 @@
     export let goToDashboard: () => void;
 
     let name = "";
+    let email = "";
     let pass = "";
     let showPassword = false;
+
+    let action = "login";
 
     onMount(() => {
         document.title = "Scheduler - Login";
@@ -24,7 +27,8 @@
     async function handleSubmit(e: Event) {
         e.preventDefault();
         try {
-            const user = await login(name, pass);
+            const request = action === "login" ? async () => await login(name, pass) : async () => await signup(name, email, pass);
+            const user = await request();
             Store.saveUser(user);
             goToDashboard();
         } catch (err) {
@@ -38,7 +42,15 @@
     }
 
     function handleKeyPress(e: KeyboardEvent) {
-        if (e.key === "Enter") handleSubmit(e);
+        if (e.key === "Enter") {
+            (e.target as HTMLInputElement).blur();
+            handleSubmit(e);
+        }
+    }
+
+    function toggleActionForms() {
+        action = action === "login" ? "sign up" : "login";
+        email = "";
     }
 </script>
 
@@ -57,9 +69,14 @@
                 id="username"
                 name="username"
                 autocomplete="given-name"
-                on:keypress={handleKeyPress}
             />
         </label>
+        {#if action === "sign up"}
+            <label for="email" class="pb-4 block"
+                >Email
+                <Input type="Email" bind:value={email} id="email" name="email" />
+            </label>
+        {/if}
         <label for="password" class="pb-4 block"
             >Password
             <Input
@@ -79,6 +96,21 @@
             <Checkbox id="show-password" bind:checked={showPassword} />Show
             password
         </label>
-        <Button on:click={handleSubmit}>Login</Button>
+        <Button class="capitalize" on:click={handleSubmit}>{action}</Button>
     </form>
+    <div>
+        <p class="text-center">
+            {action === "login"
+                ? "You don't have an account yet?"
+                : "Already have an account?"}
+        </p>
+        <button
+            on:click={toggleActionForms}
+            class="border-none bg-transparent w-full outline-none select-none"
+        >
+            <span class="w-full underline block text-blue-300 text-center"
+                >{action === "login" ? "Sign up" : "Log in"}</span
+            >
+        </button>
+    </div>
 </section>
