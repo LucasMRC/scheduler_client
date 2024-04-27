@@ -1,5 +1,4 @@
 import { getUsers } from '../lib/api/users';
-import { orderTasks } from '../utils/tasks';
 import { writable, get, type Writable } from 'svelte/store';
 import { showToast } from './toast';
 
@@ -29,8 +28,8 @@ class Store {
         this.user.set(null);
     };
 
-    public getUser(): User | null {
-        return get(this.user);
+    public getUser(): Writable<User | null> {
+        return this.user;
     };
 
     public setTasks(newTasks: Task[]) {
@@ -49,12 +48,8 @@ class Store {
         });
     };
 
-    public getTasks(): Task[] {
-        return get(this.tasks);
-    }
-
-    public getOrderedTasks(): TaskGroup {
-        return orderTasks(get(this.tasks));
+    public getTasks(): Writable<Task[]> {
+        return this.tasks;
     }
 
     public async fetchUsers() {
@@ -73,6 +68,17 @@ class Store {
 
     public getUsers(): User[] {
         return get(this.users);
+    }
+    
+    public updateTaskStatus(taskId: string, newStatus: TaskStatus) {
+        this.tasks.update((currentTasks) => {
+            return currentTasks.map((task) => {
+                if (task.id === taskId) {
+                    return { ...task, status: newStatus };
+                }
+                return task;
+            });
+        });
     }
 };
 
