@@ -13,9 +13,11 @@
     let screen = "login";
 
     onMount(async () => {
+        window._APP_STORE_ = {};
         try {
             const user = await restoreSession();
             Store.saveUser(user);
+            window._APP_STORE_.user = user;
             screen = "dashboard";
         } catch (error) {
             console.error(error);
@@ -39,7 +41,7 @@
     }
 </script>
 
-<main class="border dark:bg-neutral-800 dark:neutral-gray-700 bg-white border-neutral-200">
+<main>
     <ModeWatcher />
     <QuickActions displayLogout={screen !== "login"} {handleLogout} />
     {#if screen === "login"}

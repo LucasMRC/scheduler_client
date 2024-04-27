@@ -2,6 +2,7 @@
     import { createTask } from "../lib/api";
     import { onMount } from "svelte";
     import Store from "../store";
+    import { get } from "svelte/store";
     import { showToast } from "../store/toast";
 
     export let goToDashboard: () => void;
@@ -29,12 +30,12 @@
             recurring: periodicity,
             status: status as TaskStatus,
             dueDate,
-            createdBy: Store.getUser() ?? ({ email: assignee } as User),
+            createdBy: get(Store.getUser()) ?? ({ email: assignee } as User),
             assignedTo: assignee,
         };
         try {
             await createTask(task);
-            const assignedUser = users.find((user) => user.email === assignee);
+            const assignedUser = users.find((user) => user.alias === assignee);
             if (!assignedUser) {
                 throw new Error("Assinged user not found");
             }
@@ -48,16 +49,15 @@
                 showToast("error", "Error creating task");
             }
             console.error("Error creating task", err);
+            goToDashboard();
         }
     }
 </script>
 
-<section
-    class="grid place-items-center w-full h-[100vh] p-4 shadow sm:p-6"
->
+<section class="grid place-items-center w-full h-[100vh] p-4 shadow sm:p-6">
     <form
         on:submit|preventDefault={submitForm}
-        class="bg-gray-300 p-5 w-4/5 max-w-56 rounded grid gap-5 text-sm"
+        class="p-5 w-4/5 max-w-56 rounded grid gap-5 text-sm"
     >
         <label for="title"
             >Title
@@ -106,13 +106,13 @@
                 <option value="Overdue">Overdue</option>
             </select>
         </label>
-        <label for="dueDate"
+        <label for="due_date"
             >Due Date
             <input
                 type="date"
-                id="dueDate"
+                id="due_date"
                 bind:value={dueDate}
-                name="dueDate"
+                name="due_date"
                 min={today}
                 class="w-full p-2 border border-gray-400 rounded-md"
             />
@@ -126,7 +126,7 @@
                 class="w-full p-2 border border-gray-400 capitalize rounded-md"
             >
                 {#each users as user}
-                    <option class="capitalize" value={user.email}
+                    <option class="capitalize" value={user.alias}
                         >{user.alias}</option
                     >
                 {/each}

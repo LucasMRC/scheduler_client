@@ -1,7 +1,7 @@
 const user = {
     alias: "John Doe",
     email: "john@doe.com"
-};
+} as User;
 
 const tasks: Task[] = [
     // Tasks for today
@@ -10,7 +10,7 @@ const tasks: Task[] = [
         title: "Finish report",
         description: "Complete the quarterly report for the finance department",
         status: "Pending",
-        dueDate: "2024-03-19",
+        dueDate: new Date().toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -20,7 +20,7 @@ const tasks: Task[] = [
         title: "Meeting with client",
         description: "Discuss project updates with the client",
         status: "In Progress",
-        dueDate: "2024-03-19",
+        dueDate: new Date().toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -31,7 +31,7 @@ const tasks: Task[] = [
         title: "Prepare presentation",
         description: "Create slides for the team meeting on Friday",
         status: "Pending",
-        dueDate: "2024-03-22",
+        dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -41,7 +41,7 @@ const tasks: Task[] = [
         title: "Review project proposal",
         description: "Provide feedback on the latest project proposal",
         status: "Pending",
-        dueDate: "2024-03-21",
+        dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -51,7 +51,7 @@ const tasks: Task[] = [
         title: "Monthly review",
         description: "Conduct monthly performance review with team members",
         status: "Pending",
-        dueDate: "2024-03-23",
+        dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: "Monthly",
         createdBy: user,
         assignedTo: user
@@ -61,7 +61,7 @@ const tasks: Task[] = [
         title: "Submit expense report",
         description: "Submit expenses for reimbursement",
         status: "Done",
-        dueDate: "2024-03-20",
+        dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -72,7 +72,7 @@ const tasks: Task[] = [
         title: "Project kickoff meeting",
         description: "Kick off the new project with the team",
         status: "Pending",
-        dueDate: "2024-03-24",
+        dueDate: new Date(new Date().getTime() + 15 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -82,7 +82,7 @@ const tasks: Task[] = [
         title: "Monthly report",
         description: "Compile and send out the monthly progress report",
         status: "Pending",
-        dueDate: "2024-03-25",
+        dueDate: new Date(new Date().getTime() + 15 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: "Monthly",
         createdBy: user,
         assignedTo: user
@@ -92,7 +92,7 @@ const tasks: Task[] = [
         title: "Training session",
         description: "Attend the training session on new software tools",
         status: "Pending",
-        dueDate: "2024-03-28",
+        dueDate: new Date(new Date().getTime() + 15 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -102,7 +102,7 @@ const tasks: Task[] = [
         title: "Website redesign",
         description: "Discuss initial ideas for website redesign",
         status: "Pending",
-        dueDate: "2024-03-30",
+        dueDate: new Date(new Date().getTime() + 15 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -144,7 +144,7 @@ const tasks: Task[] = [
         title: "Code refactoring",
         description: "Refactor the legacy codebase for better performance",
         status: "In Progress",
-        dueDate: "2024-03-19",
+        dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -154,7 +154,7 @@ const tasks: Task[] = [
         title: "UI redesign",
         description: "Work on redesigning the user interface",
         status: "In Progress",
-        dueDate: "2024-03-22",
+        dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user
@@ -164,7 +164,7 @@ const tasks: Task[] = [
         title: "Client demo",
         description: "Prepare for the upcoming client demo",
         status: "In Progress",
-        dueDate: "2024-03-24",
+        dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
         assignedTo: user

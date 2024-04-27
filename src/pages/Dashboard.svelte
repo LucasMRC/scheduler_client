@@ -6,31 +6,28 @@
     import TaskList from "../lib/components/TaskList.svelte";
     import TaskMenu from "../lib/components/TaskMenu.svelte";
     import DashboardHeader from "../lib/components/DashboardHeader.svelte";
+    import { orderTasks } from "../utils/tasks";
 
     export let goToLogin: () => void;
     export let goToForm: () => void;
 
     let selectedTask: Task | null = null;
+    let tasks: Record<string, Task[]> = {};
 
-    const user = Store.getUser();
+    const userStore = Store.getUser();
+    const user = $userStore;
     if (!user) {
         logout();
         goToLogin();
     }
 
-    async function fetchTasks(): Promise<TaskGroup | never> {
+    async function fetchTasks(): Promise<void> {
         try {
             const { tasks } = await getTasks();
             Store.setTasks(tasks);
-            return Store.getOrderedTasks();
         } catch {
             throw new Error("Failed to fetch tasks");
         }
-    }
-
-    function refreshTasks() {
-        
-        window._APP_STORE_ = Store;
     }
 
     onMount(async () => {
@@ -38,8 +35,11 @@
         if (!Store.getUsers().length) {
             Store.fetchUsers();
         }
-        await fetchTasks();
-        refreshTasks();
+        const tasksStore = Store.getTasks();
+        tasksStore.subscribe((value) => {
+            tasks = orderTasks(value);
+            window._APP_STORE_.tasks = tasks;
+        });
     });
 </script>
 
@@ -47,11 +47,11 @@
     <DashboardHeader {goToForm} {user} />
     {#await fetchTasks()}
         <LoadingState />
-    {:then tasks}
+    {:then _}
         {#if Object.keys(tasks).length > 0}
             <div class="rounded p-4 overflow-hidden grid gap-1">
                 {#each Object.keys(tasks) as taskDate}
-                    <TaskList {refreshTasks} tasks={tasks[taskDate]} />
+                    <TaskList {taskDate} tasks={tasks[taskDate]} />
                 {/each}
             </div>
             {#if selectedTask}

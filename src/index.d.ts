@@ -4,6 +4,7 @@ declare interface Window {
 
 type User = {
     alias: string;
+    id: number;
     email: string;
 }
 
