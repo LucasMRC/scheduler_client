@@ -102,7 +102,7 @@
             >
                 <option value="Pending">Pending</option>
                 <option value="In Progress">In Progress</option>
-                <option value="Done">Done</option>
+                <option value="Completed">Done</option>
                 <option value="Overdue">Overdue</option>
             </select>
         </label>

@@ -8,7 +8,7 @@ type User = {
     email: string;
 }
 
-type TaskStatus = 'Pending' | 'In Progress' | 'Done' | 'Overdue';
+type TaskStatus = 'Pending' | 'In Progress' | 'Completed' | 'Overdue';
 
 type Task = {
     id: string;

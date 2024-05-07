@@ -13,7 +13,7 @@
         e.stopPropagation();
         Store.updateTaskStatus(
             task.id,
-            task.status === "Done" ? "Pending" : "Done",
+            task.status === "Completed" ? "Pending" : "Completed",
         );
     }
 
@@ -32,7 +32,7 @@
                             on:click={handleStatusChange}
                             class="border rounded"
                         >
-                            {#if task.status === "Done"}
+                            {#if task.status === "Completed"}
                                 Done!
                             {/if}
                         </IconButton>

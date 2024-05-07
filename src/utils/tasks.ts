@@ -13,7 +13,7 @@ export function orderTasks(tasks: Task[]): TaskGroup {
         const now = new Date();
         if (date.toDateString() === now.toDateString()) {
             key = OrderKeys.TODAY;
-        } else if (date < now && task.status !== 'Done') {
+        } else if (date < now && task.status !== 'Completed') {
             key = OrderKeys.OVERDUE;
         } else if (date > now && date < new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)) {
             key = OrderKeys.THIS_WEEK;

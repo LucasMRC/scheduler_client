@@ -60,7 +60,7 @@ const tasks: Task[] = [
         id: "6",
         title: "Submit expense report",
         description: "Submit expenses for reimbursement",
-        status: "Done",
+        status: "Completed",
         dueDate: new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0],
         recurring: false,
         createdBy: user,
@@ -203,7 +203,7 @@ export function login(): Promise<User> {
 export function completeTask(taskId: string): Promise<void> {
     const index = tasks.findIndex(t => t.id === taskId);
     if (index !== -1) {
-        tasks[index].status = "Done";
+        tasks[index].status = "Completed";
     }
     return Promise.resolve();
 }
