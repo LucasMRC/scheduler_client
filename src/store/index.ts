@@ -1,6 +1,7 @@
 import { getUsers } from '../lib/api/users';
 import { writable, get, type Writable } from 'svelte/store';
 import { showToast } from './toast';
+import { updateTask } from '$lib/api';
 
 let StoreInstance: Store;
 
@@ -32,8 +33,17 @@ class Store {
         return this.user;
     };
 
-    public setTasks(newTasks: Task[]) {
-        this.tasks.set(newTasks);
+    public async setTasks(newTasks: TaskDTO[]) {
+        if (!get(this.users).length) {
+            await this.fetchUsers();
+        }
+        const users = get(this.users);
+        const tasks = newTasks.map((task) => ({
+            ...task,
+            dueDate: task.dueDate.split('T')[0],
+            assignedTo: users.find((user) => user.alias === task.assignedTo)!,
+        }));
+        this.tasks.set(tasks);
     };
 
     public saveTask(newTask: Task) {
@@ -74,7 +84,16 @@ class Store {
         this.tasks.update((currentTasks) => {
             return currentTasks.map((task) => {
                 if (task.id === taskId) {
-                    return { ...task, status: newStatus };
+                    const updatedTask = { ...task, status: newStatus } as Task;
+                    updateTask(updatedTask).catch((error) => {
+                        if (error instanceof Error) {
+                            showToast("error", error.message);
+                        } else {
+                            showToast("error", "Error updating task");
+                        }
+                        console.error("Error updating task", error);
+                    });
+                    return updatedTask;
                 }
                 return task;
             });

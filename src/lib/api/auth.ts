@@ -58,7 +58,7 @@ export async function logout(): Promise<void> {
         });
 }
 
-export async function restoreSession(): Promise<never | User> {
+export async function restoreSession(): Promise<User | never> {
     return fetch(`${baseUrl}/session`, {
         method: 'GET',
         headers: {
@@ -67,7 +67,8 @@ export async function restoreSession(): Promise<never | User> {
     })
         .then(async (data) => {
             if (!data.ok) {
-                throw new Error('Invalid session');
+                console.log('Invalid session, redirecting to login');
+                return Promise.reject();
             }
             const response = await data.json() as { user: User };
             return response.user;

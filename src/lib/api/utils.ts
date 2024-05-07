@@ -30,7 +30,7 @@ export async function get(url: string): Promise<any> {
     return response.json();
 };
 
-export async function post(url: string, data: any): Promise<any> {
+export async function post<T>(url: string, data: T): Promise<any> {
     const cookie = getCookie("access_token");
     const response = await fetch(baseUrl + url, {
         method: "POST",
@@ -41,12 +41,15 @@ export async function post(url: string, data: any): Promise<any> {
         body: JSON.stringify(data),
     })
     if (!response.ok) {
-        throw new Error(response.statusText);
+        if (response.status === 401)
+            window.location.reload();
+        else
+            throw new Error(response.statusText);
     }
     return response.json();
 };
 
-export async function update(url: string, data: any): Promise<any> {
+export async function update<T>(url: string, data: T): Promise<any> {
     const cookie = getCookie("access_token");
     const response = await fetch(baseUrl + url, {
         method: "PATCH",
@@ -57,7 +60,10 @@ export async function update(url: string, data: any): Promise<any> {
         body: JSON.stringify(data),
     })
     if (!response.ok) {
-        throw new Error(response.statusText);
+        if (response.status === 401)
+            window.location.reload();
+        else
+            throw new Error(response.statusText);
     }
     return response.json();
 };
