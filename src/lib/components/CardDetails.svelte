@@ -2,6 +2,8 @@
     import { Cross1 } from "svelte-radix";
     import IconButton from "./IconButton.svelte";
     import Store from "../../store";
+    import { Input } from "./ui/input";
+    import Select from "./Select.svelte";
 
     export let task: Task;
     export let handleCloseDetails: () => void;
@@ -9,14 +11,14 @@
     let cardData = {
         title: task.title,
         description: task.description,
-        due_date: task.dueDate,
+        dueDate: task.dueDate,
         recurring: task.recurring,
-        assigned_to: task.assignedTo,
+        assignedTo: task.assignedTo,
     };
 
     const userOptions = Store.getUsers().map((user) => ({
         value: user,
-        text: user.alias,
+        label: user.alias,
     }));
 </script>
 
@@ -31,19 +33,10 @@
         bind:value={cardData.title}
     />
     <textarea class="text-balance min-h-40" bind:value={cardData.description} />
-    <input
+    <Input
         type="date"
         class="text-xs text-thin"
-        bind:value={cardData.due_date}
+        bind:value={cardData.dueDate}
     />
-    <select class="text-xs text-thin" bind:value={cardData.assigned_to}>
-        {#each userOptions as user}
-            <option
-                selected={task.assignedTo === user.value}
-                value={user.value}
-            >
-                {user.text}
-            </option>
-        {/each}
-    </select>
+    <Select value={cardData.assignedTo} class="text-xs text-thin capitalize" options={userOptions}  />
 </article>
