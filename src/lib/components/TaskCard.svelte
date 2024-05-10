@@ -11,9 +11,9 @@
 
     function handleStatusChange(e: Event) {
         e.stopPropagation();
-        Store.updateTaskStatus(
+        Store.updateTask(
             task.id,
-            task.status === "Completed" ? "Pending" : "Completed",
+            { status: task.status === "Completed" ? "Pending" : "Completed" }
         );
     }
 

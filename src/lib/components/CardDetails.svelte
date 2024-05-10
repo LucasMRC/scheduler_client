@@ -20,23 +20,47 @@
         value: user,
         label: user.alias,
     }));
+
+    const selectedUser = userOptions.find(
+        (val) => val.label === cardData.assignedTo.alias
+    )!;
+
+    function closeDetails() {
+        let updatedFlag = false;
+        for (const key in cardData) {
+            // @ts-ignore
+            if (task[key] !== cardData[key]) {
+                updatedFlag = true;
+            }
+        }
+        if (updatedFlag) {
+            Store.updateTask(task.id, cardData);
+        }
+        handleCloseDetails();
+    }
 </script>
 
 <article
-    class="[&>*]:bg-transparent [&>textarea]:resize-none p-2 fixed auto-rows-min grid inset-0 bg-background px-4 py-6"
+    class="fixed inset-0 bg-transparent px-4 py-6 [&>div.details-container]:p-9"
 >
-    <IconButton on:click={handleCloseDetails}>
+    <IconButton on:click={closeDetails} class="border border-gray-300 mb-2 bg-background">
         <Cross1 />
     </IconButton>
-    <textarea
-        class="font-thin text-2xl text-pretty"
-        bind:value={cardData.title}
-    />
-    <textarea class="text-balance min-h-40" bind:value={cardData.description} />
-    <Input
-        type="date"
-        class="text-xs text-thin"
-        bind:value={cardData.dueDate}
-    />
-    <Select value={cardData.assignedTo} class="text-xs text-thin capitalize" options={userOptions}  />
+    <div class="details-container [&>*]:bg-transparent bg-background grid autor-rows-min border border-gray-300 rounded [&>textarea]:resize-none">
+        <span class="text-sm">Título:</span>
+        <textarea
+            class="outline-none font-thin text-2xl text-pretty"
+            bind:value={cardData.title}
+        />
+        <span class="text-sm">Descripción:</span>
+        <textarea class="text-balance outline-none min-h-40" bind:value={cardData.description} />
+        <span class="text-sm">Fecha límite:</span>
+        <Input
+            type="date"
+            class="w-[50%] text-xs text-thin outline-none mb-3"
+            bind:value={cardData.dueDate}
+        />
+        <span class="text-sm">Asignado a:</span>
+        <Select value={selectedUser} class="w-[50%] text-xs text-thin capitalize" options={userOptions}  />
+    </div>
 </article>

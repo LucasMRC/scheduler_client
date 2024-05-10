@@ -80,20 +80,23 @@ class Store {
         return get(this.users);
     }
     
-    public updateTaskStatus(taskId: string, newStatus: TaskStatus) {
+    public updateTask(taskId: string, update: Partial<Task>) {
         this.tasks.update((currentTasks) => {
             return currentTasks.map((task) => {
                 if (task.id === taskId) {
-                    const updatedTask = { ...task, status: newStatus } as Task;
-                    updateTask(updatedTask).catch((error) => {
+                    for (const key in update) {
+                        // @ts-ignore
+                        task[key] = update[key];
+                    }
+                    updateTask(task).catch((error) => {
                         if (error instanceof Error) {
                             showToast("error", error.message);
                         } else {
                             showToast("error", "Error updating task");
                         }
+                        this.tasks.set(currentTasks); // Revert changes
                         console.error("Error updating task", error);
                     });
-                    return updatedTask;
                 }
                 return task;
             });
