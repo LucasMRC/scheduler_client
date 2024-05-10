@@ -8,17 +8,16 @@
         SelectValue,
         SelectInput,
     } from './ui/select';
-    import type { Selected } from "bits-ui";
 
     type Option = {
         value: unknown;
         label: string;
     };
 
-    type $$Props = HTMLAttributes<HTMLDivElement> & { options: Option[]; value: Selected<unknown> };
+    type $$Props = HTMLAttributes<HTMLDivElement> & { options: Option[]; value: Option };
 
     let className: $$Props["class"] = undefined;
-    let selected: $$Props["value"] = undefined as unknown as Selected<unknown>;
+    let selected: $$Props["value"] = { label: '', value: undefined } as Option;
 
     export { className as class };
     export let options: Option[];
@@ -34,4 +33,5 @@
             <SelectItem class="capitalize" label={option.label} value={option.value}>{option.label}</SelectItem>
         {/each}
     </SelectContent>
+    <SelectInput value={selected.value}>{selected.label}</SelectInput>
 </Select>

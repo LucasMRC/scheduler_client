@@ -8,6 +8,7 @@ export async function getTasks(): Promise<{ tasks: TaskDTO[] } | never> {
             tasks: tasks.map((task: TaskDTO) => ({
                 ...task,
                 dueDate: task.dueDate.split('T')[0], // format date in an input friendly way
+                doneDate: task.doneDate.split('T')[0], // format date in an input friendly way
             }))
         };
     } catch (error) {

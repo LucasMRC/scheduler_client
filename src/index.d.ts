@@ -16,6 +16,7 @@ type Task = {
     description: string;
     status: TaskStatus;
     dueDate: string;
+    doneDate: string;
     recurring: false | string;
     createdBy: User;
     assignedTo: User;
