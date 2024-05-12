@@ -13,6 +13,7 @@
 
     let selectedTask: Task | null = null;
     let tasks: Record<string, Task[]> = {};
+    let filter: "pending" | "done" | "all" = "pending";
 
     const userStore = Store.getUser();
     const user = $userStore;
@@ -25,11 +26,15 @@
         try {
             const { tasks } = await getTasks();
             Store.setTasks(tasks);
-        } catch {
-            throw new Error("Failed to fetch tasks");
+        } catch (error) {
+            console.error("Failed to fetch tasks: ", error);
+            showToast("error", "Failed to fetch tasks");
         }
     }
 
+    function updateFilter(newFilter: "pending" | "done" | "all"): void {
+        filter = newFilter;
+    }
     onMount(async () => {
         document.title = "Dashboard";
         if (!Store.getUsers().length) {
@@ -44,14 +49,15 @@
 </script>
 
 <section class="w-full min-h-[100vh] shadow sm:p-6">
-    <DashboardHeader {goToForm} {user} />
+    <DashboardHeader {filter} {updateFilter} {goToForm} {user} />
+    <button on:click={triggerNotification}>Trigger Notification</button>
     {#await fetchTasks()}
         <LoadingState />
     {:then _}
         {#if Object.keys(tasks).length > 0}
             <div class="rounded p-4 overflow-hidden grid gap-1">
                 {#each Object.keys(tasks) as taskDate}
-                    <TaskList {taskDate} tasks={tasks[taskDate]} />
+                    <TaskList {filter} {taskDate} tasks={tasks[taskDate]} />
                 {/each}
             </div>
             {#if selectedTask}
@@ -63,7 +69,5 @@
         {:else}
             <p>No tasks found</p>
         {/if}
-    {:catch error}
-        <p>{error.message}</p>
     {/await}
 </section>

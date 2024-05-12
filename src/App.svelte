@@ -20,7 +20,7 @@
             window._APP_STORE_.user = user;
             screen = "dashboard";
         } catch (error) {
-            console.error(error);
+            console.debug("Session invalid, redirecting to login", error);
             screen = "login";
         }
     });

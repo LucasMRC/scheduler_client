@@ -6,8 +6,14 @@ enum OrderKeys {
     LATER = 'Later',
 }
 
-export function orderTasks(tasks: Task[]): TaskGroup {
+type Filter = 'pending' | 'done' | 'all';
+
+export function orderTasks(tasks: Task[], filter?: Filter): TaskGroup {
     return tasks.reduce((acc, task) => {
+        if (filter === 'pending' && task.status === 'Completed'
+            || filter === 'done' && task.status !== 'Completed') {
+            return acc;
+        }
         const date = new Date(task.dueDate);
         let key: string;
         const now = new Date();
